@@ -4,6 +4,9 @@ import pytz
 from aiocqhttp.exceptions import Error as CQHttpError
 from nonebot import on_command, CommandSession
 from aiofile import AIOFile
+
+from nonebot import permission as perm
+
 ad_message='便宜出一个校园网，最好长期'
 
 #@nonebot.scheduler.scheduled_job('cron',hour='10',minute='*')
@@ -23,13 +26,14 @@ async def _():
                     print(groupid)
                     admessage = group_id.split('#')[1:]
                     await bot.send_group_msg(group_id=int(groupid), message=f'{"".join(admessage)}')
-                    await session.send(f'{group_id}定时发送成功')
+#                    await session.send(f'{group_id}定时发送成功')
        
     except CQHttpError:
-        await session.send('定时发送失败')
+        pass
+#        await session.send('定时发送失败')
      
 
-@on_command('add_adgroup',aliases=("+"),only_to_me = True)
+@on_command('add_adgroup',aliases=("+"),only_to_me = True,permission=perm.SUPERUSER)
 async def add_adgroup(session:CommandSession):
     if len(session.current_arg_text.split('#')) == 1:
         admessage = session.current_arg_text.split('#')[0]+'#'+ad_message 
@@ -48,7 +52,7 @@ async def add_adgroup(session:CommandSession):
         
         
         
-@on_command('del_adgroup',aliases=("-"),only_to_me=True)
+@on_command('del_adgroup',aliases=("-"),only_to_me=True,permission=perm.SUPERUSER)
 async def del_adgroup(session:CommandSession):
     print(session.current_arg_text)
     adgroups = []
@@ -68,12 +72,12 @@ async def del_adgroup(session:CommandSession):
             f.write(group_id + '\n')
     
 
-@on_command('modifyDefaultMsg',aliases=('m'),only_to_me=True)
+@on_command('modifyDefaultMsg',aliases=('m'),only_to_me=True,permission=perm.SUPERUSER)
 async def modifyDefaultMsg(session:CommandSession):
     ad_message = session.current_arg_text
     session.send(f'修改默认群发成功，现在的默认群发：{ad_message}')
     
-@on_command('send_ad',aliases=('s'),only_to_me=True)
+@on_command('send_ad',aliases=('s'),only_to_me=True,permission=perm.SUPERUSER)
 async def send_ad(session:CommandSession):
     bot = nonebot.get_bot()
     try:
@@ -86,18 +90,18 @@ async def send_ad(session:CommandSession):
                     print(groupid)
                     admessage = group_id.split('#')[1:]
                     await bot.send_group_msg(group_id=int(groupid), message=f'{"".join(admessage)}')
-                    await session.send(f'群{group_id}成功发送消息 {admessage}')
+                    await session.send(f'群{groupid}成功发送消息成功{admessage}')
        
     except CQHttpError:
         await session.send('发送失败')
-@on_command('check_ad',aliases='c',only_to_me=True)
+@on_command('check_ad',aliases='c',only_to_me=True,permission=perm.SUPERUSER)
 async def check_ad(session:CommandSession):
     adgroup= []
     with open('./adgroup.txt','r') as f:
         for message in f.read().split("\n")[:-1]:
             adgroup.append(message+'\n')
     await session.send(f'{"".join(adgroup)}')
-@on_command('adhelp',aliases='h',only_to_me=True)
+@on_command('adhelp',aliases='h',only_to_me=True,permission=perm.SUPERUSER)
 async def adhelp(session:CommandSession):
     await session.send(f'+: 添加群发,+ 123#出一个校园网  \n -:删除群发，- 123#出一个校园网 \n s:发送群发 s\n c: 查看群发 c \n m:修改默认群发 m 出一个校园网\n h:显示本帮主信息')
 #@on_command()
