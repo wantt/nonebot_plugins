@@ -11,7 +11,7 @@ ad_message='便宜出一个校园网，最好长期'
 
 #@nonebot.scheduler.scheduled_job('cron',hour='10',minute='*')
 #@nonebot.scheduler('cron',hour='10',minute='*')
-@nonebot.scheduler.scheduled_job('cron',hour='*/5',minute='0')
+@nonebot.scheduler.scheduled_job('cron',hour='*/8',minute='0')
 async def _():
     bot = nonebot.get_bot()
     now  = datetime.now(pytz.timezone('Asia/Shanghai'))
