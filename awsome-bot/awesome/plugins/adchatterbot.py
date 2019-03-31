@@ -13,7 +13,7 @@ import re
 
 if 1:
     chatbot = ChatBot("seven",
-                    logic_adapters=['chatterbot.logic.BestMatch'],
+            logic_adapters=[{'import_path':'chatterbot.logic.BestMatch','default_response':'#','maximum_similarity_threshold':0.90}],
             read_only=True)
     trainer = ListTrainer(chatbot)
     trainer.export_for_training('./my_export.json')
@@ -26,7 +26,9 @@ async def _(session:NLPSession):
     if re.match(rule,session.msg):
         await session.send('你好，我出校园网',ensure_private = True)
     elif session.ctx['message_type']=='private':
-        await session.send(f"{chatbot.get_response(session.msg)}")
+        response_ad= chatbot.get_response(session.msg)
+        if not ("#" in str(response_ad)):
+            await session.send(f"{chatbot.get_response(session.msg)}")
         
 #    elif '大家好' in session.msg:
 #        await session.send('哦')

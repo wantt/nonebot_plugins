@@ -80,20 +80,20 @@ async def modifyDefaultMsg(session:CommandSession):
 @on_command('send_ad',aliases=('s'),only_to_me=True,permission=perm.SUPERUSER)
 async def send_ad(session:CommandSession):
     bot = nonebot.get_bot()
-    try:
+    if 1:
         adgroup=[]
         with open('./adgroup.txt','r') as f:
             for group_id in f.read().split('\n')[:-1]:  # [531481587,161631645]:
-                groupid = group_id.split('#')[0]
-                if groupid not in adgroup and groupid.isdigit():
-                    adgroup.append(groupid)
-                    print(groupid)
-                    admessage = group_id.split('#')[1:]
-                    await bot.send_group_msg(group_id=int(groupid), message=f'{"".join(admessage)}')
-                    await session.send(f'群{groupid}成功发送消息成功{admessage}')
+                try:
+                    groupid = group_id.split('#')[0]
+                    if groupid not in adgroup and groupid.isdigit():
+                        adgroup.append(groupid)
+                        admessage = group_id.split('#')[1:]
+                        await bot.send_group_msg(group_id=int(groupid), message=f'{"".join(admessage)}')
+                        await session.send(f'群{groupid}成功发送消息成功{admessage}')
        
-    except CQHttpError:
-        await session.send('发送失败')
+                except CQHttpError:
+                    await session.send(f'{groupid} 发送失败,你应该没有这个群')
 @on_command('check_ad',aliases='c',only_to_me=True,permission=perm.SUPERUSER)
 async def check_ad(session:CommandSession):
     adgroup= []
