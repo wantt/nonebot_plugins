@@ -36,10 +36,10 @@ async def _():
 
 @on_command('add_adgroup',aliases=("+"),only_to_me = True,permission=perm.SUPERUSER)
 async def add_adgroup(session:CommandSession):
-    if len(session.current_arg_text.split('#')) == 1:
-        admessage = session.current_arg_text.split('#')[0]+'#'+ad_message 
-    else:
-        admessage = session.current_arg_text
+#    if len(session.current_arg_text.split('#')) == 1:
+#        admessage = session.current_arg_text.split('#')[0]+'#'+ad_message 
+#    else:
+#        admessage = session.current_arg_text
         
 
     if session.current_arg_text.split('#')[0].isdigit():
@@ -48,7 +48,7 @@ async def add_adgroup(session:CommandSession):
             await f.fsync()
         await session.send(f'添加成功 {admessage}')
     else:
-        await session.send("添加失败，正确格式：+ 群号#内容 \n 如：+ 1122341#出一个校园网")
+        await session.send("添加失败，正确格式：+ 群号#内容 \n 如：+ 1122341")
 
         
         
@@ -62,7 +62,7 @@ async def del_adgroup(session:CommandSession):
             group_id = content.split('#')[0]
             if content not in adgroups and group_id.isdigit():
                 adgroups.append(content)
-    if session.current_arg_text.split('#')[0].isdigit() and session.current_arg_text in adgroups:
+    if session.current_arg_text.split('#')[0].isdigit() and session.current_arg_text.split('#')[0].isdigit() in adgroups:
         adgroups.remove(session.current_arg_text)
         await session.send(f'删除成功{session.current_arg_text}')
     else:
@@ -89,7 +89,6 @@ async def send_ad(session:CommandSession):
                     groupid = group_id.split('#')[0]
                     if groupid not in adgroup and groupid.isdigit():
                         adgroup.append(groupid)
-                        admessage = group_id.split('#')[1:]
                         await bot.send_group_msg(group_id=int(groupid), message=f'{"".join(random.choice(ad_message))}')
 #                        await bot.send_group_msg(group_id=int(groupid), message=f'{"".join(admessage)}')
                         await session.send(f'群{groupid}成功发送消息成功{admessage}')
