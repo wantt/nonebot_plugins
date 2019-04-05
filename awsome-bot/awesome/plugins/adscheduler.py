@@ -4,10 +4,10 @@ import pytz
 from aiocqhttp.exceptions import Error as CQHttpError
 from nonebot import on_command, CommandSession
 from aiofile import AIOFile
-
+import random
 from nonebot import permission as perm
 
-ad_message='便宜出一个校园网，最好长期'
+ad_message=['便宜出一个校园网，最好长期','转让一个校园网，最好长期','出一个校园网，需要的私聊','出一个校网，需要的同学请私聊我','便宜出一个校园网啦，要的私聊','出一个校园网，有人需要吗，私聊']
 
 #@nonebot.scheduler.scheduled_job('cron',hour='10',minute='*')
 #@nonebot.scheduler('cron',hour='10',minute='*')
@@ -25,7 +25,8 @@ async def _():
                     adgroup.append(groupid)
                     print(groupid)
                     admessage = group_id.split('#')[1:]
-                    await bot.send_group_msg(group_id=int(groupid), message=f'{"".join(admessage)}')
+#                    await bot.send_group_msg(group_id=int(groupid), message=f'{"".join(admessage)}')
+                    await bot.send_group_msg(group_id=int(groupid), message=f'{"".join(random.choice(ad_message))}')
 #                    await session.send(f'{group_id}定时发送成功')
        
     except CQHttpError:
@@ -89,7 +90,8 @@ async def send_ad(session:CommandSession):
                     if groupid not in adgroup and groupid.isdigit():
                         adgroup.append(groupid)
                         admessage = group_id.split('#')[1:]
-                        await bot.send_group_msg(group_id=int(groupid), message=f'{"".join(admessage)}')
+                        await bot.send_group_msg(group_id=int(groupid), message=f'{"".join(random.choice(ad_message))}')
+#                        await bot.send_group_msg(group_id=int(groupid), message=f'{"".join(admessage)}')
                         await session.send(f'群{groupid}成功发送消息成功{admessage}')
        
                 except CQHttpError:
